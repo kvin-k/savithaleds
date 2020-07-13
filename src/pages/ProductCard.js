@@ -2,6 +2,11 @@ import React from 'react';
 import {Link} from 'gatsby'
 
 const ProductCard = ({location}) => {
+  if( location.state.productDetails.title===undefined){
+    location.state.productDetails.title="title"
+    location.state.productDetails.content="content"
+    location.state.productDetails.image="image"
+  }
   return (
   <>
   <div class="flex justify-between">

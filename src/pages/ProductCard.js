@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'gatsby'
 
 const ProductCard = ({location}) => {
-  if( location.state.productDetails.title===undefined){
+  if( location.state===undefined){
     location.state.productDetails.title="title"
     location.state.productDetails.content="content"
     location.state.productDetails.image="image"

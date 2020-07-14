@@ -184,7 +184,7 @@ const HomePage= () => {
       <CallIcon/>9391010443</a></p>
       <p><a href = "tel:9246192610">
       <CallIcon/>9246192610</a></p>
-      <p><a href = "https://api.whatsapp.com/send?phone=9391010443&text=Message From Website">
+      <p><a href = "https://api.whatsapp.com/send?phone=919391010443&text=Message From Website">
       <WhatsAppIcon/>Send Message</a></p>
       </p>
       

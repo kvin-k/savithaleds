@@ -172,7 +172,7 @@ const HomePage= () => {
       <p className="mt-4 text-xl font-light">
         <p className="mt-3">
         <a href="https://goo.gl/maps/2UptdTZT77rE3JZc9" target="_blank" rel="noreferrer">
-          <LocationOn className="slick-icons" />AMBHIKA INDUSTRIES<br/>#3-5-222/162<br/>Krishna Nagar, Moula-Ali
+          <LocationOn className="slick-icons" />AMBIKA INDUSTRIES<br/>#3-5-222/162<br/>Krishna Nagar Colony, Moula-Ali
         <br/>Hyderabad-500 040.<br/>
         
            </a>

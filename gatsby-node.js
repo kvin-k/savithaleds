@@ -1,30 +1,44 @@
-// const path = require('path')
+const path = require('path')
 
-// module.exports.createPages = async ({ graphql, actions })=>{
-//     const { createPage } = actions
-//     const ProductCard = path.resolve('./src/pages/ProductCard.js') 
-//     const productsLED = path.resolve('./src/data/products-leds.js')
-//     const productsCovid = path.resolve('./src/data/products-covid.js')
-//     // const response = await graphql(`
-//     // query{
-//     //     allContentfulBlogPost{
-//     //       edges{
-//     //         node{
-//     //           slug
-//     //         }
-//     //       }
-//     //     }
-//     //   }
-//     // `)
+module.exports.createPages = async ({ graphql, actions })=>{
+    const { createPage } = actions
+    const productCardLED = path.resolve('./src/components/ProductCardLED.js') 
+    const productCardCovid = path.resolve('./src/components/ProductCardCovid.js') 
+    const response = await graphql(`
+    query{
+        allContentfulLedProducts{
+          edges{
+            node{
+              title
+            }
+          }
+        }
+        allContentfulCovidProducts{
+          edges{
+            node{
+              title
+            }
+          }
+        }
+      }
+    `)
 
-//     productsLED.forEach((product)=>{
-//         createPage({
-//             component: ProductCard,
-//             path: `/ProductCard/${product.title}`,
-//             context: {
-//                 slug: product.title
-//             }
-//         })
-//     })
-// }
-
+    response.data.allContentfulLedProducts.edges.forEach((edge)=>{
+        createPage({
+            component: productCardLED,
+            path: `/${edge.node.title.replace(/\s/g,'')}`,
+            context: {
+                slug: edge.node.title
+            }
+        })
+    })
+    response.data.allContentfulCovidProducts.edges.forEach((edge)=>{
+      createPage({
+          component: productCardCovid,
+          path: `/${edge.node.title.replace(/\s/g,'')}`,
+          context: {
+              slug: edge.node.title
+          }
+      })
+  })
+}

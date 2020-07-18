@@ -1,8 +1,6 @@
 import React from 'react';
 import Card from '../components/Card';
 import Layout from '../components/layout/Layout';
-import productsLED from '../data/products-leds';
-import productsCovid from '../data/products-covid';
 import { graphql, useStaticQuery, Link} from 'gatsby'
 import Hero from './Hero';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,96 +11,62 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CallIcon from '@material-ui/icons/Call';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import indexStyles from './index.module.css';
+import WhatsApp from './WhatsApp';
+import Head from '../components/head'
 
 
 
 const HomePage= () => {
   const data = useStaticQuery(graphql`
   query {
-    data1: file(relativePath: { eq: "panel.jpg" }) {
-      childImageSharp {
-        fluid(quality: 100) {
-          ...GatsbyImageSharpFluid_withWebp
+    productsLED: allContentfulLedProducts(sort: {fields: title, order: ASC}) {
+      edges {
+        node {
+          title
         }
       }
     }
-  
-    data2:file(relativePath: { eq: "mask.jpeg" }) {
-      childImageSharp {
-        fluid(quality: 100) {
-          ...GatsbyImageSharpFluid_withWebp
+    productsCovid: allContentfulCovidProducts(sort: {fields: title, order: ASC}) {
+      edges {
+        node {
+          title
         }
       }
     }
-  
-  data3: file(relativePath: { eq: "uefa.jpg" }) {
-      childImageSharp {
-        fluid(quality: 100) {
-          ...GatsbyImageSharpFluid_withWebp
-        }
-      }
-    }
-  
-  data4:file(relativePath: { eq: "default.jpg" }) {
-      childImageSharp {
-        fluid(quality: 100) {
-          ...GatsbyImageSharpFluid_withWebp
+    allContentfulHeroImages(sort: {fields: imageTitle___title}) {
+      edges {
+        node {
+          imageTitle {
+            title
+            fluid(quality: 100){
+              src
+            }
+          }
         }
       }
     }
   }
+  
   `)
 
   return(
   <Layout>
-    
+    <Head />
     <div className={indexStyles.imageCarousel}>
-    <section >
-    {/* className="pt-20 md:pt-40" */}
-    <Carousel>
-    <Carousel.Item>
-    <Hero fluid={data.data1.childImageSharp.fluid}>
-    
-    </Hero>
-    <Carousel.Caption>
-    <h3>LED Panels</h3>
-    {/* <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> */}
-    </Carousel.Caption>
-    </Carousel.Item>
-    <Carousel.Item>
-    <Hero fluid={data.data2.childImageSharp.fluid}>
-    
-     </Hero>
-    
-    <Carousel.Caption>
-    <h3>N95 Masks</h3>
-    {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
-    </Carousel.Caption>
-    </Carousel.Item>
-    <Carousel.Item>
-    <Hero fluid={data.data3.childImageSharp.fluid}>
-    
-    </Hero>
-    
-    <Carousel.Caption>
-    <h3>LED Flood Lights</h3>
-    {/* <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> */}
-    </Carousel.Caption>
-    </Carousel.Item>
-    <Carousel.Item>
-    <Hero fluid={data.data4.childImageSharp.fluid}>
-    
-    </Hero>
-    
-    <Carousel.Caption>
-    <h3>LED Blulbs</h3>
-    {/* <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> */}
-    </Carousel.Caption>
-    </Carousel.Item>
-    
-    </Carousel>
-
-    </section>
+      <section >
+      <Carousel>
+        {data.allContentfulHeroImages.edges.map((edge)=>
+          <Carousel.Item>
+          <Hero fluid={edge.node.imageTitle.fluid}>
+          
+          </Hero>
+          <Carousel.Caption>
+            <h3>{edge.node.imageTitle.title.substr(1).trim()}</h3>
+          </Carousel.Caption>
+          </Carousel.Item>
+        )}
+      </Carousel>
+      </section>
     </div>
 
     <div className={indexStyles.productsDiv}>
@@ -110,44 +74,45 @@ const HomePage= () => {
       <div className="container mx-auto text-center">
         <h2 className="text-3xl lg:text-5xl font-semibold">Products</h2>
         <div className="flex flex-col sm:flex-row sm:-mx-3 mt-12">
+
           <div className="flex-1 px-1">
             <Card className="mb-8">
               <p className="font-semibold text-xl">LED Lights</p>
               <ul >
-                {productsLED.map(product => (
-                  <li key={product.title} className="flex-1 ">
+                {data.productsLED.edges.map(edge => (
+                  <li key={edge.node.title} className="flex-1 ">
                   <Link
-                    to={`/ProductCard/`}
+                    to={`/${edge.node.title.replace(/\s/g,'')}/`}
                     state={{
                       modal: true,
-                      productDetails:product
                     }}
-                  >{product.title}</Link>
+                  >{edge.node.title.substr(1).trim()}</Link>
                   </li>
                 ))}
                 
               </ul>
             </Card>
           </div>
+
           <div className="flex-1 px-1">
             <Card className="mb-8">
               <p className="font-semibold text-xl">COVID-19 Protection Gear</p>
               <ul >
-                {productsCovid.map(product => (
-                  <li key={product.title} className="flex-1 ">
+                {data.productsCovid.edges.map(edge => (
+                  <li key={edge.node.title} className="flex-1 ">
                   <Link
-                    to={`/ProductCard/`}
+                    to={`/${edge.node.title.replace(/\s/g,'')}/`}
                     state={{
                       modal: true,
-                      productDetails:product
                     }}
-                  >{product.title}</Link>
+                  >{edge.node.title.substr(1).trim()}</Link>
                   </li>
                 ))}
                 
               </ul>
             </Card>
           </div>
+
         </div>
       </div>
     </section>
@@ -189,8 +154,11 @@ const HomePage= () => {
       </p>
       
     </section>
+
+    <WhatsApp />
   </Layout>
   )
 }
+
 
 export default HomePage;
